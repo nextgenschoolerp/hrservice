@@ -1,0 +1,900 @@
+{
+  "info": {
+    "_postman_id": "8488e55e-hr07-4000-8000-f5921728678c",
+    "name": "School ERP - HrService (Module 07)",
+    "description": "Module 07 Staff HR, Biometric Attendance & Payroll (hrservice, port 8088, context path /hrservice, API base /api/v1/hr). Covers stories US-07000 to US-07019. Run in order after loading module07_hr_payroll_seed.sql.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8088/hrservice", "type": "string" },
+    { "key": "authUrl", "value": "http://localhost:8082/authservice", "type": "string" },
+    { "key": "password", "value": "Password@123", "type": "string" },
+    { "key": "tenantId", "value": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "type": "string" },
+    { "key": "branchId", "value": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380b11", "type": "string" },
+    { "key": "hrToken", "value": "", "type": "string" },
+    { "key": "accountantToken", "value": "", "type": "string" },
+    { "key": "principalToken", "value": "", "type": "string" },
+    { "key": "teacherToken", "value": "", "type": "string" },
+    { "key": "auditorToken", "value": "", "type": "string" },
+    { "key": "staffId", "value": "5eed0007-0001-4000-8000-000000000001", "type": "string" },
+    { "key": "shiftId", "value": "5eed0007-0002-4000-8000-000000000001", "type": "string" },
+    { "key": "applicationId", "value": "5eed0006-0006-4000-8000-000000000001", "type": "string" },
+    { "key": "payrollId", "value": "5eed0007-0007-4000-8000-000000000001", "type": "string" },
+    { "key": "resignationId", "value": "", "type": "string" },
+    { "key": "anomalyId", "value": "", "type": "string" },
+    { "key": "cpdId", "value": "5eed0007-0008-4000-8000-000000000001", "type": "string" },
+    { "key": "batchId", "value": "5eed0007-0011-4000-8000-000000000001", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "00 - Sign in (authservice)",
+      "item": [
+        {
+          "name": "Sign in as hr_priya",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('hrToken', pm.response.json().data.accessToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"hr_priya\", \"password\": \"{{password}}\"}"
+            },
+            "url": "{{authUrl}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "Sign in as accountant_vikram",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('accountantToken', pm.response.json().data.accessToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"accountant_vikram\", \"password\": \"{{password}}\"}"
+            },
+            "url": "{{authUrl}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "Sign in as principal_sharma",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('principalToken', pm.response.json().data.accessToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"principal_sharma\", \"password\": \"{{password}}\"}"
+            },
+            "url": "{{authUrl}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "Sign in as teacher_kavya",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('teacherToken', pm.response.json().data.accessToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"teacher_kavya\", \"password\": \"{{password}}\"}"
+            },
+            "url": "{{authUrl}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "Sign in as auditor_mehta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('auditorToken', pm.response.json().data.accessToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"auditor_mehta\", \"password\": \"{{password}}\"}"
+            },
+            "url": "{{authUrl}}/api/v1/auth/login"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07000 - Employee Master Records",
+      "item": [
+        {
+          "name": "Create Employee Master Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201 Created', () => pm.response.to.have.status(201));",
+                  "var data = pm.response.json().data;",
+                  "pm.collectionVariables.set('staffId', data.staffId);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{hrToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"employeeCode\": \"DPS-EMP-2001\", \"firstName\": \"Deepak\", \"lastName\": \"Verma\", \"department\": \"Computer Science\", \"designation\": \"PGT Informatics\", \"basicSalary\": 52000.00, \"joiningDate\": \"2024-04-01\", \"email\": \"deepak.verma@dps.edu.in\", \"phone\": \"9811100201\", \"panNumber\": \"ABCDE8888M\", \"aadhaarNumber\": \"888877776666\", \"pfUan\": \"100904568888\", \"esiNumber\": \"3100458888\", \"bankName\": \"HDFC Bank\", \"bankAccountNumber\": \"501234568888\", \"bankIfsc\": \"HDFC0001234\", \"qualifications\": \"MCA, B.Ed\", \"contractTerms\": \"Regular Full-Time\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/employees"
+          }
+        },
+        {
+          "name": "Get Employee by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 200 OK', () => pm.response.to.have.status(200));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": "{{baseUrl}}/api/v1/hr/employees/{{staffId}}"
+          }
+        },
+        {
+          "name": "List All Employees",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 200 OK', () => pm.response.to.have.status(200));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{hrToken}}" }],
+            "url": "{{baseUrl}}/api/v1/hr/employees"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07001 - Biometric Hardware Terminal Logs",
+      "item": [
+        {
+          "name": "Ingest Fingerprint Scan Log",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 201 Created', () => pm.response.to.have.status(201));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accountantToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"staffId\": \"{{staffId}}\", \"terminalDeviceId\": \"DEVICE-GATE-01\", \"scanTimestamp\": \"2026-10-21T07:28:00Z\", \"scanType\": \"IN\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/attendance/scans"
+          }
+        },
+        {
+          "name": "Query Staff Biometric History",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 200 OK', () => pm.response.to.have.status(200));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": "{{baseUrl}}/api/v1/hr/attendance/scans/{{staffId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07002 - Shift Roster Planning",
+      "item": [
+        {
+          "name": "Create Flexible Shift Schedule",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201 Created', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('shiftId', pm.response.json().data.shiftId);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{principalToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"shiftCode\": \"SHIFT-LAB-ROTATIONAL\", \"shiftName\": \"Laboratory Practical Shift\", \"startTime\": \"08:00:00\", \"endTime\": \"15:00:00\", \"graceMinutes\": 15, \"halfDayThresholdMinutes\": 210}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/attendance/shifts"
+          }
+        },
+        {
+          "name": "Assign Shift to Staff",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 200 OK', () => pm.response.to.have.status(200));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{principalToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"staffId\": \"{{staffId}}\", \"shiftId\": \"{{shiftId}}\", \"effectiveFrom\": \"2026-11-01\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/attendance/shifts/assignments"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07003 - Mobile Staff Leave Application",
+      "item": [
+        {
+          "name": "Submit Digital Leave Application",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201 Created', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('applicationId', pm.response.json().data.applicationId);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"staffId\": \"{{staffId}}\", \"leaveType\": \"CASUAL\", \"startDate\": \"2026-11-10\", \"endDate\": \"2026-11-11\", \"reason\": \"Medical appointment and health checkup\", \"proxyNotes\": \"Classes assigned to Computer Lab Assistant\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/leaves"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07004 - Staff Leave Approval Queue",
+      "item": [
+        {
+          "name": "Approve Staff Leave Request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 200 OK', () => pm.response.to.have.status(200));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{hrToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"status\": \"APPROVED\", \"reviewComments\": \"Approved with full proxy coverage verified\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/leaves/{{applicationId}}/review"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07005 - Gross-to-Net Payroll Calculation",
+      "item": [
+        {
+          "name": "Calculate Monthly Salary",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201 Created', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('payrollId', pm.response.json().data.payrollId);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accountantToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"staffId\": \"{{staffId}}\", \"payMonth\": 10, \"payYear\": 2026, \"allowances\": 4000.00}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/payroll/calculate"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07006 - Unexcused Absence LWP Deduction",
+      "item": [
+        {
+          "name": "Query LWP Calculation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 200 OK', () => pm.response.to.have.status(200));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accountantToken}}" }],
+            "url": "{{baseUrl}}/api/v1/hr/payroll/lwp-deduction/{{staffId}}?payMonth=10&payYear=2026"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07007 - Statutory PF and ESI Returns",
+      "item": [
+        {
+          "name": "Generate PF Return ECR File",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 200 OK', () => pm.response.to.have.status(200));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{auditorToken}}" }],
+            "url": "{{baseUrl}}/api/v1/hr/payroll/statutory-returns?reportType=PF&payMonth=9&payYear=2026"
+          }
+        },
+        {
+          "name": "Generate ESI Monthly Return",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 200 OK', () => pm.response.to.have.status(200));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{auditorToken}}" }],
+            "url": "{{baseUrl}}/api/v1/hr/payroll/statutory-returns?reportType=ESI&payMonth=9&payYear=2026"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07008 - Encrypted PDF Payslips",
+      "item": [
+        {
+          "name": "Dispatch Encrypted Payslip",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 201 Created', () => pm.response.to.have.status(201));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{hrToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"payrollId\": \"{{payrollId}}\", \"passwordHint\": \"PAN Last 4 digits + Birth Year\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/payroll/payslips/dispatch"
+          }
+        },
+        {
+          "name": "Download Payslip PDF",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 200 OK', () => pm.response.to.have.status(200));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{teacherToken}}" }],
+            "url": "{{baseUrl}}/api/v1/hr/payroll/payslips/{{payrollId}}/pdf"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07009 - Continuous Professional Development Credits",
+      "item": [
+        {
+          "name": "Log CPD Training Record",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 201 Created', () => pm.response.to.have.status(201));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{teacherToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"staffId\": \"{{staffId}}\", \"courseTitle\": \"AI in Education and Modern Classroom Pedagogies\", \"conductingAgency\": \"CBSE Centre of Excellence\", \"completionDate\": \"2026-10-15\", \"trainingHours\": 20.0, \"creditsEarned\": 4.0, \"certificateReference\": \"CERT-CBSE-COE-2026-4433\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/development/cpd"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07010 - Employee Probation & Appraisals",
+      "item": [
+        {
+          "name": "Record Appraisal and Confirm Probation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 201 Created', () => pm.response.to.have.status(201));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{principalToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"staffId\": \"{{staffId}}\", \"reviewDate\": \"2026-10-21\", \"appraisalCycle\": \"Annual Performance Appraisal\", \"performanceRating\": 4.8, \"probationDecision\": \"CONFIRMED\", \"reviewerComments\": \"Outstanding performance, active in school events, recommended for confirmation.\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/employees/appraisals"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07011 - Offboarding Gratuity & Settlement",
+      "item": [
+        {
+          "name": "Calculate Full and Final Settlement",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 201 Created', () => pm.response.to.have.status(201));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accountantToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"staffId\": \"{{staffId}}\", \"lastWorkingDay\": \"2026-12-31\", \"otherAdditions\": 3000.00, \"otherDeductions\": 500.00, \"remarks\": \"Superannuation settlement calculation\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/development/settlement"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07012 - Bank Bulk Payout Statements",
+      "item": [
+        {
+          "name": "Export Bank Bulk Salary Batch",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 201 Created', () => pm.response.to.have.status(201));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accountantToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"payMonth\": 9, \"payYear\": 2026, \"bankName\": \"State Bank of India\", \"disbursementDate\": \"2026-09-30\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/payroll/bank-payouts"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07013 - Principal Attendance Dashboard",
+      "item": [
+        {
+          "name": "Get Department Attendance Summary",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 200 OK', () => pm.response.to.have.status(200));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{principalToken}}" }],
+            "url": "{{baseUrl}}/api/v1/hr/attendance/summary"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07014 - Tax Declarations & TDS Slabs",
+      "item": [
+        {
+          "name": "Submit Employee Tax Declaration",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 201 Created', () => pm.response.to.have.status(201));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accountantToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"staffId\": \"{{staffId}}\", \"financialYear\": \"2026-2027\", \"taxRegime\": \"OLD\", \"section80cAmount\": 150000.00, \"section80dAmount\": 25000.00, \"hraAmount\": 120000.00}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/payroll/tax-declarations"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07015 - Biometric Punch Regularisation",
+      "item": [
+        {
+          "name": "Flag Biometric Anomaly",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201 Created', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('anomalyId', pm.response.json().data.anomalyId);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{hrToken}}" }],
+            "url": "{{baseUrl}}/api/v1/hr/attendance/anomalies/{{staffId}}?anomalyDate=2026-10-20&type=MISSING_OUT_PUNCH"
+          }
+        },
+        {
+          "name": "Regularise Anomaly",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 200 OK', () => pm.response.to.have.status(200));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{hrToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"regularisationReason\": \"Conducted inter-school science exhibition duty, punch machine out of service\", \"correctedInTime\": \"07:30:00\", \"correctedOutTime\": \"16:00:00\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/attendance/anomalies/{{anomalyId}}/regularise"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07016 - Resignation & Clearance NOC Workflow",
+      "item": [
+        {
+          "name": "Submit Resignation Notice",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201 Created', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('resignationId', pm.response.json().data.resignationId);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{hrToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"staffId\": \"{{staffId}}\", \"submissionDate\": \"2026-10-21\", \"noticePeriodDays\": 30, \"requestedLastWorkingDay\": \"2026-11-20\", \"reason\": \"Higher education abroad\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/employees/resignations"
+          }
+        },
+        {
+          "name": "Clear Department Dues",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 200 OK', () => pm.response.to.have.status(200));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{hrToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"department\": \"LIBRARY\", \"cleared\": true}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/employees/resignations/{{resignationId}}/clearance"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07017 - Statutory Maternity & Medical Quotas",
+      "item": [
+        {
+          "name": "Configure Maternity Quota",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 201 Created', () => pm.response.to.have.status(201));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{hrToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"staffId\": \"{{staffId}}\", \"quotaYear\": 2026, \"leaveType\": \"MATERNITY\", \"totalEntitled\": 180.0}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/leaves/quotas"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07018 - Annual Payroll Budget Forecasting",
+      "item": [
+        {
+          "name": "Generate Budget Forecast",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 201 Created', () => pm.response.to.have.status(201));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{principalToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"fiscalYear\": \"2027-2028\", \"department\": \"Computer Science\", \"projectedIncrementPct\": 10.0, \"simulatedNewHiresCount\": 2}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/payroll/forecasts"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-07019 - Retired Staff Archival Vault",
+      "item": [
+        {
+          "name": "Archive Retired Staff Record",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 201 Created', () => pm.response.to.have.status(201));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{hrToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"staffId\": \"{{staffId}}\", \"retirementDate\": \"2026-10-31\", \"retentionPeriodYears\": 10, \"archiveReason\": \"Superannuation\", \"dossierReference\": \"VAULT-DPS-EMP-2001\"}"
+            },
+            "url": "{{baseUrl}}/api/v1/hr/employees/archives"
+          }
+        },
+        {
+          "name": "List Compliance Archives",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status is 200 OK', () => pm.response.to.have.status(200));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{hrToken}}" }],
+            "url": "{{baseUrl}}/api/v1/hr/employees/archives"
+          }
+        }
+      ]
+    }
+  ]
+}
