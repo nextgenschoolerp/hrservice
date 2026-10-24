@@ -10,8 +10,8 @@ import java.util.UUID;
 
 @Repository
 public interface TaxDeclarationRepository extends JpaRepository<TaxDeclaration, UUID> {
-    Optional<TaxDeclaration> findByDeclarationIdAndTenantId(UUID declarationId, UUID tenantId);
+    Optional<TaxDeclaration> findByDeclarationIdAndTenantId(UUID declarationId, String tenantId);
     Optional<TaxDeclaration> findByStaffIdAndFinancialYear(UUID staffId, String financialYear);
-    List<TaxDeclaration> findByTenantIdAndFinancialYear(UUID tenantId, String financialYear);
+    List<TaxDeclaration> findByTenantIdAndFinancialYear(String tenantId, String financialYear);
     List<TaxDeclaration> findByStaffId(UUID staffId);
 }

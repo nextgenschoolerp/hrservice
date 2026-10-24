@@ -13,7 +13,7 @@ import java.util.UUID;
 public class BiometricScanResponse {
     private UUID logId;
     private UUID staffId;
-    private UUID tenantId;
+    private String tenantId;
     private String terminalDeviceId;
     private Instant scanTimestamp;
     private ScanType scanType;

@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class LeaveQuotaResponse {
     private UUID quotaId;
-    private UUID tenantId;
+    private String tenantId;
     private UUID staffId;
     private Integer quotaYear;
     private LeaveType leaveType;

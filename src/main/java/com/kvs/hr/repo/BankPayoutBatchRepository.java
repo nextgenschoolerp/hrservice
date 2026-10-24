@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface BankPayoutBatchRepository extends JpaRepository<BankPayoutBatch, UUID> {
-    Optional<BankPayoutBatch> findByBatchIdAndTenantId(UUID batchId, UUID tenantId);
+    Optional<BankPayoutBatch> findByBatchIdAndTenantId(UUID batchId, String tenantId);
     Optional<BankPayoutBatch> findByBatchReference(String batchReference);
-    List<BankPayoutBatch> findByTenantIdOrderByDisbursementDateDesc(UUID tenantId);
+    List<BankPayoutBatch> findByTenantIdOrderByDisbursementDateDesc(String tenantId);
 }

@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class StaffSettlementResponse {
     private UUID settlementId;
-    private UUID tenantId;
+    private String tenantId;
     private UUID staffId;
     private UUID resignationId;
     private LocalDate lastWorkingDay;

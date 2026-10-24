@@ -11,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PayrollForecastResponse {
     private UUID forecastId;
-    private UUID tenantId;
+    private String tenantId;
     private String fiscalYear;
     private String department;
     private BigDecimal currentAnnualCost;

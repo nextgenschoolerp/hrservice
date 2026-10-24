@@ -11,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class StaffShiftResponse {
     private UUID shiftId;
-    private UUID tenantId;
+    private String tenantId;
     private String shiftCode;
     private String shiftName;
     private LocalTime startTime;

@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class LeaveApplicationResponse {
     private UUID applicationId;
-    private UUID tenantId;
+    private String tenantId;
     private UUID staffId;
     private LeaveType leaveType;
     private LocalDate startDate;

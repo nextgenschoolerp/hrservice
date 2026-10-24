@@ -10,12 +10,12 @@ import java.util.UUID;
 
 @Repository
 public interface StaffProfileRepository extends JpaRepository<StaffProfile, UUID> {
-    Optional<StaffProfile> findByTenantIdAndEmployeeCode(UUID tenantId, String employeeCode);
-    Optional<StaffProfile> findByStaffIdAndTenantId(UUID staffId, UUID tenantId);
-    Optional<StaffProfile> findFirstByTenantIdAndUserId(UUID tenantId, String userId);
-    List<StaffProfile> findByTenantId(UUID tenantId);
-    List<StaffProfile> findByTenantIdAndDepartment(UUID tenantId, String department);
-    List<StaffProfile> findByTenantIdAndBranchId(UUID tenantId, String branchId);
-    List<StaffProfile> findByTenantIdAndBranchIdAndDepartment(UUID tenantId, String branchId, String department);
-    boolean existsByTenantIdAndEmployeeCode(UUID tenantId, String employeeCode);
+    Optional<StaffProfile> findByTenantIdAndEmployeeCode(String tenantId, String employeeCode);
+    Optional<StaffProfile> findByStaffIdAndTenantId(UUID staffId, String tenantId);
+    Optional<StaffProfile> findFirstByTenantIdAndUserId(String tenantId, String userId);
+    List<StaffProfile> findByTenantId(String tenantId);
+    List<StaffProfile> findByTenantIdAndDepartment(String tenantId, String department);
+    List<StaffProfile> findByTenantIdAndBranchId(String tenantId, String branchId);
+    List<StaffProfile> findByTenantIdAndBranchIdAndDepartment(String tenantId, String branchId, String department);
+    boolean existsByTenantIdAndEmployeeCode(String tenantId, String employeeCode);
 }

@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class StaffProfileResponse {
     private UUID staffId;
-    private UUID tenantId;
+    private String tenantId;
     private String branchId;
     /** authservice user of this employee, if any */
     private String userId;

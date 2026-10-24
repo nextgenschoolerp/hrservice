@@ -10,6 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface StaffShiftRepository extends JpaRepository<StaffShift, UUID> {
-    Optional<StaffShift> findByTenantIdAndShiftCode(UUID tenantId, String shiftCode);
-    List<StaffShift> findByTenantIdAndIsActiveTrue(UUID tenantId);
+    Optional<StaffShift> findByTenantIdAndShiftCode(String tenantId, String shiftCode);
+    List<StaffShift> findByTenantIdAndIsActiveTrue(String tenantId);
 }

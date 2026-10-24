@@ -13,5 +13,5 @@ import java.util.UUID;
 public interface LeaveQuotaRepository extends JpaRepository<LeaveQuota, UUID> {
     Optional<LeaveQuota> findByStaffIdAndQuotaYearAndLeaveType(UUID staffId, Integer quotaYear, LeaveType leaveType);
     List<LeaveQuota> findByStaffIdAndQuotaYear(UUID staffId, Integer quotaYear);
-    List<LeaveQuota> findByTenantIdAndQuotaYear(UUID tenantId, Integer quotaYear);
+    List<LeaveQuota> findByTenantIdAndQuotaYear(String tenantId, Integer quotaYear);
 }

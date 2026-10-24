@@ -10,6 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface PayrollForecastRepository extends JpaRepository<PayrollForecast, UUID> {
-    Optional<PayrollForecast> findByForecastIdAndTenantId(UUID forecastId, UUID tenantId);
-    List<PayrollForecast> findByTenantIdAndFiscalYear(UUID tenantId, String fiscalYear);
+    Optional<PayrollForecast> findByForecastIdAndTenantId(UUID forecastId, String tenantId);
+    List<PayrollForecast> findByTenantIdAndFiscalYear(String tenantId, String fiscalYear);
 }

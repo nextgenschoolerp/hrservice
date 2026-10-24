@@ -11,7 +11,7 @@ import java.util.UUID;
 @Repository
 public interface StaffPayrollRepository extends JpaRepository<StaffPayroll, UUID> {
     Optional<StaffPayroll> findByStaffIdAndPayYearAndPayMonth(UUID staffId, Integer payYear, Integer payMonth);
-    Optional<StaffPayroll> findByPayrollIdAndTenantId(UUID payrollId, UUID tenantId);
-    List<StaffPayroll> findByTenantIdAndPayYearAndPayMonth(UUID tenantId, Integer payYear, Integer payMonth);
+    Optional<StaffPayroll> findByPayrollIdAndTenantId(UUID payrollId, String tenantId);
+    List<StaffPayroll> findByTenantIdAndPayYearAndPayMonth(String tenantId, Integer payYear, Integer payMonth);
     List<StaffPayroll> findByStaffIdOrderByPayYearDescPayMonthDesc(UUID staffId);
 }

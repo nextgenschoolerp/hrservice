@@ -10,8 +10,8 @@ import java.util.UUID;
 
 @Repository
 public interface PayslipDistributionRepository extends JpaRepository<PayslipDistribution, UUID> {
-    Optional<PayslipDistribution> findByDistributionIdAndTenantId(UUID distributionId, UUID tenantId);
+    Optional<PayslipDistribution> findByDistributionIdAndTenantId(UUID distributionId, String tenantId);
     Optional<PayslipDistribution> findByPayrollId(UUID payrollId);
     List<PayslipDistribution> findByStaffIdOrderBySentTimestampDesc(UUID staffId);
-    List<PayslipDistribution> findByTenantId(UUID tenantId);
+    List<PayslipDistribution> findByTenantId(String tenantId);
 }

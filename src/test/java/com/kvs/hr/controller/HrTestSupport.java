@@ -35,8 +35,8 @@ public abstract class HrTestSupport {
     @Autowired protected StaffProfileRepository staffRepository;
 
     protected final String run = UUID.randomUUID().toString().substring(0, 8);
-    protected final String tenant = "T-HR-" + run;
-    protected final UUID tenantId = UUID.nameUUIDFromBytes(("T-HR-" + run).getBytes());
+    protected final String tenantId = "T-HR-" + run;
+    protected final String tenant = tenantId;
     protected final String branchId = "TEST-NORTH-" + run;
     /** userId of the FACULTY_MEMBER test token, linked to staffKavya's profile */
     protected final String kavyaUserId = "faculty_member-" + run;

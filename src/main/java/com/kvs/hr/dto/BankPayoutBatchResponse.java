@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class BankPayoutBatchResponse {
     private UUID batchId;
-    private UUID tenantId;
+    private String tenantId;
     private String batchReference;
     private Integer payMonth;
     private Integer payYear;

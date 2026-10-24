@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CpdRecordResponse {
     private UUID cpdId;
-    private UUID tenantId;
+    private String tenantId;
     private UUID staffId;
     private String courseTitle;
     private String conductingAgency;

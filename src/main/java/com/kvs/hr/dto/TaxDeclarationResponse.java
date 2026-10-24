@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class TaxDeclarationResponse {
     private UUID declarationId;
-    private UUID tenantId;
+    private String tenantId;
     private UUID staffId;
     private String financialYear;
     private TaxRegime taxRegime;

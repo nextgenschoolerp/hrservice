@@ -11,6 +11,6 @@ import java.util.UUID;
 @Repository
 public interface StaffBiometricLogRepository extends JpaRepository<StaffBiometricLog, UUID> {
     List<StaffBiometricLog> findByStaffIdOrderByScanTimestampDesc(UUID staffId);
-    List<StaffBiometricLog> findByTenantIdAndScanTimestampBetween(UUID tenantId, Instant start, Instant end);
+    List<StaffBiometricLog> findByTenantIdAndScanTimestampBetween(String tenantId, Instant start, Instant end);
     List<StaffBiometricLog> findByStaffIdAndScanTimestampBetween(UUID staffId, Instant start, Instant end);
 }

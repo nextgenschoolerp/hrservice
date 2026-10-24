@@ -28,7 +28,7 @@ public class BiometricAnomaly extends BaseAuditEntity {
     private UUID anomalyId;
 
     @Column(name = "tenant_id", nullable = false)
-    private UUID tenantId;
+    private String tenantId;
 
     @Column(name = "staff_id", nullable = false)
     private UUID staffId;

@@ -12,10 +12,10 @@ import java.util.UUID;
 
 @Repository
 public interface LeaveApplicationRepository extends JpaRepository<LeaveApplication, UUID> {
-    Optional<LeaveApplication> findByApplicationIdAndTenantId(UUID applicationId, UUID tenantId);
-    List<LeaveApplication> findByTenantIdOrderByCreatedAtDesc(UUID tenantId);
+    Optional<LeaveApplication> findByApplicationIdAndTenantId(UUID applicationId, String tenantId);
+    List<LeaveApplication> findByTenantIdOrderByCreatedAtDesc(String tenantId);
     List<LeaveApplication> findByStaffIdOrderByCreatedAtDesc(UUID staffId);
-    List<LeaveApplication> findByTenantIdAndStatus(UUID tenantId, LeaveStatus status);
+    List<LeaveApplication> findByTenantIdAndStatus(String tenantId, LeaveStatus status);
     List<LeaveApplication> findByStaffIdAndStatusAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
             UUID staffId, LeaveStatus status, LocalDate end, LocalDate start);
 }

@@ -13,7 +13,7 @@ import java.util.UUID;
 public class PayrollResponse {
     private UUID payrollId;
     private UUID staffId;
-    private UUID tenantId;
+    private String tenantId;
     private Integer payMonth;
     private Integer payYear;
     private BigDecimal grossSalary;

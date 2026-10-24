@@ -149,7 +149,7 @@ public class PayrollService {
     // US-07007: Generate statutory PF and ESI monthly return files
     @Transactional(readOnly = true)
     public StatutoryReportResponse generateStatutoryReport(String reportType, Integer payMonth, Integer payYear) {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         List<StaffPayroll> payrolls = staffPayrollRepository.findByTenantIdAndPayYearAndPayMonth(tenantId, payYear, payMonth);
 
         BigDecimal totalGross = BigDecimal.ZERO;
@@ -308,7 +308,7 @@ public class PayrollService {
     // US-07012: Export monthly salary disbursement statements to bank bulk payout portals
     @Transactional
     public BankPayoutBatchResponse exportBankPayoutBatch(BankPayoutBatchRequest request) {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         List<StaffPayroll> payrolls = staffPayrollRepository.findByTenantIdAndPayYearAndPayMonth(
                 tenantId, request.getPayYear(), request.getPayMonth());
 
@@ -347,7 +347,7 @@ public class PayrollService {
 
     @Transactional(readOnly = true)
     public List<BankPayoutBatchResponse> listBankPayouts() {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         return bankPayoutBatchRepository.findByTenantIdOrderByDisbursementDateDesc(tenantId).stream()
                 .map(this::mapToBatchResponse)
                 .collect(Collectors.toList());
@@ -412,7 +412,7 @@ public class PayrollService {
     // US-07018: Generate annual staff cost and payroll budget forecasts for management
     @Transactional
     public PayrollForecastResponse generateForecast(PayrollForecastRequest request) {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         List<StaffProfile> deptStaff = staffProfileRepository.findByTenantIdAndDepartment(tenantId, request.getDepartment());
 
         BigDecimal currentCost = deptStaff.stream()
@@ -447,7 +447,7 @@ public class PayrollService {
 
     @Transactional(readOnly = true)
     public List<PayrollForecastResponse> listForecasts(String fiscalYear) {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         return payrollForecastRepository.findByTenantIdAndFiscalYear(tenantId, fiscalYear).stream()
                 .map(this::mapToForecastResponse)
                 .collect(Collectors.toList());
@@ -463,7 +463,7 @@ public class PayrollService {
 
     @Transactional(readOnly = true)
     public List<PayrollResponse> listPayrolls(UUID staffId, Integer payYear, Integer payMonth) {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         List<StaffPayroll> list;
         if (staffId != null) {
             list = staffPayrollRepository.findByStaffIdOrderByPayYearDescPayMonthDesc(staffId);

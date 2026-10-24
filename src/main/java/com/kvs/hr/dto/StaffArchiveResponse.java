@@ -11,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class StaffArchiveResponse {
     private UUID archiveId;
-    private UUID tenantId;
+    private String tenantId;
     private UUID staffId;
     private String employeeCode;
     private String fullName;

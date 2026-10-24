@@ -30,7 +30,7 @@ public class StaffProfile extends BaseAuditEntity {
     private UUID staffId;
 
     @Column(name = "tenant_id", nullable = false)
-    private UUID tenantId;
+    private String tenantId;
 
     /** Campus code as issued by authservice (e.g. DPS-DELHI-NORTH), same as the JWT branchId claim */
     @Column(name = "branch_id", nullable = false, length = 50)

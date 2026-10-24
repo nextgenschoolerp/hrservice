@@ -26,7 +26,7 @@ public class PayslipDistribution extends BaseAuditEntity {
     private UUID distributionId;
 
     @Column(name = "tenant_id", nullable = false)
-    private UUID tenantId;
+    private String tenantId;
 
     @Column(name = "payroll_id", nullable = false)
     private UUID payrollId;

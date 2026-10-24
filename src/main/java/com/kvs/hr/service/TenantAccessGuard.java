@@ -70,31 +70,15 @@ public class TenantAccessGuard {
                 .orElse(false);
     }
 
-    public boolean canAccessTenant(UUID tenantId) {
-        if (isSuperAdmin()) {
-            return true;
-        }
-        if (tenantId == null) {
-            return false;
-        }
-        return canAccessTenant(tenantId.toString());
-    }
-
-    public void requireTenantRecord(UUID tenantId, String resourceName, String fieldName, Object fieldValue) {
+    public void requireTenantRecord(String tenantId, String resourceName, String fieldName, Object fieldValue) {
         if (!canAccessTenant(tenantId)) {
             throw new ResourceNotFoundException(resourceName, fieldName, fieldValue);
         }
     }
 
-    public UUID requireCurrentTenantId() {
-        String tenantStr = currentTenantId()
+    public String requireCurrentTenantId() {
+        return currentTenantId()
                 .orElseThrow(() -> new ResourceNotFoundException("Tenant", "currentTenant", "missing in JWT claims"));
-        try {
-            return UUID.fromString(tenantStr);
-        } catch (IllegalArgumentException e) {
-            // For testing or custom tenants formatted as strings (e.g. T-ACAD-...), create a deterministic UUID
-            return UUID.nameUUIDFromBytes(tenantStr.getBytes(StandardCharsets.UTF_8));
-        }
     }
 
     private Optional<String> claim(String name) {

@@ -11,8 +11,8 @@ import java.util.UUID;
 
 @Repository
 public interface StaffResignationRepository extends JpaRepository<StaffResignation, UUID> {
-    Optional<StaffResignation> findByResignationIdAndTenantId(UUID resignationId, UUID tenantId);
+    Optional<StaffResignation> findByResignationIdAndTenantId(UUID resignationId, String tenantId);
     Optional<StaffResignation> findTopByStaffIdOrderBySubmissionDateDesc(UUID staffId);
-    List<StaffResignation> findByTenantIdOrderBySubmissionDateDesc(UUID tenantId);
-    List<StaffResignation> findByTenantIdAndStatus(UUID tenantId, ResignationStatus status);
+    List<StaffResignation> findByTenantIdOrderBySubmissionDateDesc(String tenantId);
+    List<StaffResignation> findByTenantIdAndStatus(String tenantId, ResignationStatus status);
 }

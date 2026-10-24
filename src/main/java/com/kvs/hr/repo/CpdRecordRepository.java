@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface CpdRecordRepository extends JpaRepository<CpdRecord, UUID> {
-    Optional<CpdRecord> findByCpdIdAndTenantId(UUID cpdId, UUID tenantId);
+    Optional<CpdRecord> findByCpdIdAndTenantId(UUID cpdId, String tenantId);
     List<CpdRecord> findByStaffIdOrderByCompletionDateDesc(UUID staffId);
-    List<CpdRecord> findByTenantId(UUID tenantId);
+    List<CpdRecord> findByTenantId(String tenantId);
 }

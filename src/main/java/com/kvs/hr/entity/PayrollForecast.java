@@ -24,7 +24,7 @@ public class PayrollForecast extends BaseAuditEntity {
     private UUID forecastId;
 
     @Column(name = "tenant_id", nullable = false)
-    private UUID tenantId;
+    private String tenantId;
 
     @Column(name = "fiscal_year", nullable = false, length = 20)
     private String fiscalYear;

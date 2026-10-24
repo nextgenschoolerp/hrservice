@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class StaffAppraisalResponse {
     private UUID appraisalId;
-    private UUID tenantId;
+    private String tenantId;
     private UUID staffId;
     private LocalDate reviewDate;
     private String appraisalCycle;

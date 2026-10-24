@@ -29,7 +29,7 @@ public class StaffBiometricLog extends BaseAuditEntity {
     private UUID staffId;
 
     @Column(name = "tenant_id", nullable = false)
-    private UUID tenantId;
+    private String tenantId;
 
     @Column(name = "terminal_device_id", nullable = false, length = 50)
     private String terminalDeviceId;

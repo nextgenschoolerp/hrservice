@@ -29,7 +29,7 @@ public class StaffPayroll extends BaseAuditEntity {
     private UUID staffId;
 
     @Column(name = "tenant_id", nullable = false)
-    private UUID tenantId;
+    private String tenantId;
 
     @Column(name = "pay_month", nullable = false)
     private Integer payMonth;

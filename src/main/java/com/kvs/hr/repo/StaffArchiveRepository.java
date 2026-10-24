@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface StaffArchiveRepository extends JpaRepository<StaffArchive, UUID> {
-    Optional<StaffArchive> findByArchiveIdAndTenantId(UUID archiveId, UUID tenantId);
+    Optional<StaffArchive> findByArchiveIdAndTenantId(UUID archiveId, String tenantId);
     Optional<StaffArchive> findByStaffId(UUID staffId);
-    List<StaffArchive> findByTenantId(UUID tenantId);
+    List<StaffArchive> findByTenantId(String tenantId);
 }

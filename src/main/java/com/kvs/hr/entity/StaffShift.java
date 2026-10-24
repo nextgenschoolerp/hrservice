@@ -24,7 +24,7 @@ public class StaffShift extends BaseAuditEntity {
     private UUID shiftId;
 
     @Column(name = "tenant_id", nullable = false)
-    private UUID tenantId;
+    private String tenantId;
 
     @Column(name = "shift_code", nullable = false, length = 50)
     private String shiftCode;

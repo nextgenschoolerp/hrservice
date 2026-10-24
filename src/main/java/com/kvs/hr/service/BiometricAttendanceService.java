@@ -82,7 +82,7 @@ public class BiometricAttendanceService {
     // US-07002: Shift roster planning
     @Transactional
     public StaffShiftResponse createShift(StaffShiftRequest request) {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         if (shiftRepository.findByTenantIdAndShiftCode(tenantId, request.getShiftCode()).isPresent()) {
             throw new ConflictException("Shift with code " + request.getShiftCode() + " already exists", "DUPLICATE_SHIFT_CODE");
         }
@@ -105,7 +105,7 @@ public class BiometricAttendanceService {
 
     @Transactional(readOnly = true)
     public List<StaffShiftResponse> listShifts() {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         return shiftRepository.findByTenantIdAndIsActiveTrue(tenantId).stream()
                 .map(this::mapToShiftResponse)
                 .collect(Collectors.toList());
@@ -137,7 +137,7 @@ public class BiometricAttendanceService {
     // US-07013: Department-wise staff attendance summaries on principal dashboard
     @Transactional(readOnly = true)
     public AttendanceSummaryResponse getAttendanceSummary(LocalDate date) {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         LocalDate queryDate = date != null ? date : LocalDate.now();
         Instant dayStart = queryDate.atStartOfDay(ZoneOffset.UTC).toInstant();
         Instant dayEnd = queryDate.plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant();
@@ -215,7 +215,7 @@ public class BiometricAttendanceService {
 
     @Transactional(readOnly = true)
     public List<BiometricAnomalyResponse> listAnomalies(UUID staffId) {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         List<BiometricAnomaly> list = (staffId != null)
                 ? anomalyRepository.findByStaffIdOrderByAnomalyDateDesc(staffId)
                 : anomalyRepository.findByTenantIdOrderByAnomalyDateDesc(tenantId);

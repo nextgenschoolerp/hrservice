@@ -35,7 +35,7 @@ public class EmployeeService {
     // US-07000: Maintain employee master records
     @Transactional
     public StaffProfileResponse createEmployee(StaffProfileRequest request) {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         if (staffProfileRepository.existsByTenantIdAndEmployeeCode(tenantId, request.getEmployeeCode())) {
             throw new ConflictException("Employee with code " + request.getEmployeeCode() + " already exists", "DUPLICATE_EMPLOYEE_CODE");
         }
@@ -86,7 +86,7 @@ public class EmployeeService {
 
     @Transactional(readOnly = true)
     public StaffProfileResponse getEmployeeByCode(String employeeCode) {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         StaffProfile staff = staffProfileRepository.findByTenantIdAndEmployeeCode(tenantId, employeeCode)
                 .orElseThrow(() -> new ResourceNotFoundException("StaffProfile", "employeeCode", employeeCode));
         return mapToResponse(staff);
@@ -95,7 +95,7 @@ public class EmployeeService {
     /** The signed-in user's own profile, matched on the token's userId claim. */
     @Transactional(readOnly = true)
     public StaffProfileResponse getMyProfile() {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         String userId = tenantGuard.currentUserId()
                 .orElseThrow(() -> new ResourceNotFoundException("StaffProfile", "userId", "missing in JWT claims"));
         StaffProfile staff = staffProfileRepository.findFirstByTenantIdAndUserId(tenantId, userId)
@@ -105,7 +105,7 @@ public class EmployeeService {
 
     @Transactional(readOnly = true)
     public List<StaffProfileResponse> listEmployees(String department, String branchId) {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         boolean byDept = department != null && !department.isBlank();
         boolean byBranch = branchId != null && !branchId.isBlank();
         List<StaffProfile> list;
@@ -298,7 +298,7 @@ public class EmployeeService {
 
     @Transactional(readOnly = true)
     public List<StaffArchiveResponse> listArchives() {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         return staffArchiveRepository.findByTenantId(tenantId).stream()
                 .map(this::mapToArchiveResponse)
                 .collect(Collectors.toList());

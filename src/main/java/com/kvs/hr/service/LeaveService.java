@@ -112,7 +112,7 @@ public class LeaveService {
 
     @Transactional(readOnly = true)
     public List<LeaveApplicationResponse> listLeaves(UUID staffId, LeaveStatus status) {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         List<LeaveApplication> list;
         if (staffId != null) {
             requireStaffOfTenant(staffId);
@@ -153,7 +153,7 @@ public class LeaveService {
 
     @Transactional(readOnly = true)
     public List<LeaveQuotaResponse> listQuotas(UUID staffId, Integer quotaYear) {
-        UUID tenantId = tenantGuard.requireCurrentTenantId();
+        String tenantId = tenantGuard.requireCurrentTenantId();
         int year = quotaYear != null ? quotaYear : java.time.LocalDate.now().getYear();
         if (staffId != null) {
             requireStaffOfTenant(staffId);
