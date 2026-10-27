@@ -6,10 +6,13 @@ import com.kvs.hr.dto.*;
 import com.kvs.hr.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -97,6 +100,25 @@ public class EmployeeController {
                 .message("Employee profile updated successfully")
                 .data(data)
                 .build());
+    }
+
+    // Staff photo (JPEG or PNG, 5 MB): replaces the photo on file
+    @PostMapping(value = "/{staffId}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize(HrRoles.EMPLOYEE_MANAGE)
+    public ResponseEntity<ApiResponse<StaffProfileResponse>> uploadPhoto(
+            @PathVariable UUID staffId,
+            @RequestPart("file") MultipartFile file) {
+        return ResponseEntity.ok(ApiResponse.success("Staff photo uploaded", employeeService.uploadPhoto(staffId, file)));
+    }
+
+    @GetMapping("/{staffId}/photo/file")
+    @PreAuthorize(HrRoles.STAFF_VIEW)
+    public ResponseEntity<byte[]> photo(@PathVariable UUID staffId) {
+        EmployeeService.PhotoContent photo = employeeService.readPhoto(staffId);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(photo.contentType()))
+                .header(HttpHeaders.CACHE_CONTROL, "private, no-cache")
+                .body(photo.bytes());
     }
 
     // US-07010: Track probation completion dates and schedule appraisal reviews

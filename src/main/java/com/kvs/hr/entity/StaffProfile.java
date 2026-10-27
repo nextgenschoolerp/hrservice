@@ -110,4 +110,8 @@ public class StaffProfile extends BaseAuditEntity {
 
     @Column(name = "contract_terms", length = 500)
     private String contractTerms;
+
+    /** Path of the staff photo in the HR photo vault (StaffPhotoStorage); null when none is on file. */
+    @Column(name = "photo_path", length = 255)
+    private String photoPath;
 }

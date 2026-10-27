@@ -19,6 +19,12 @@ spring:
       minimum-idle: 1
   flyway:
     enabled: false
+  servlet:
+    multipart:
+      # Staff photos are limited to 5 MB by StaffPhotoStorage, which answers with a readable 400. These limits sit above it
+      # so an oversized file is refused with that message, not by dropping the connection.
+      max-file-size: 20MB
+      max-request-size: 20MB
   jpa:
     hibernate:
       ddl-auto: update

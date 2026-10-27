@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +32,7 @@ public class EmployeeService {
     private final StaffArchiveRepository staffArchiveRepository;
     private final TenantAccessGuard tenantGuard;
     private final HrAuditService auditService;
+    private final StaffPhotoStorage photoStorage;
 
     // US-07000: Maintain employee master records
     @Transactional
@@ -140,6 +142,9 @@ public class EmployeeService {
         staff.setDepartment(request.getDepartment());
         staff.setDesignation(request.getDesignation());
         staff.setBasicSalary(request.getBasicSalary());
+        staff.setJoiningDate(request.getJoiningDate());
+        // The edit form does not send a probation end date, so keep the stored one unless the request gives one
+        if (request.getProbationEndDate() != null) staff.setProbationEndDate(request.getProbationEndDate());
         staff.setEmail(request.getEmail());
         staff.setPhone(request.getPhone());
         // Identity and bank fields are kept when the request leaves them out (the staff form does not edit them)
@@ -327,7 +332,8 @@ public class EmployeeService {
                 .probationEndDate(s.getProbationEndDate())
                 .employmentStatus(s.getEmploymentStatus())
                 .qualifications(s.getQualifications())
-                .contractTerms(s.getContractTerms());
+                .contractTerms(s.getContractTerms())
+                .hasPhoto(s.getPhotoPath() != null);
         if (canSeeConfidential(s)) {
             b.basicSalary(s.getBasicSalary())
                     .panNumber(s.getPanNumber())
@@ -350,6 +356,38 @@ public class EmployeeService {
 
     private static String blankToNull(String v) {
         return v == null || v.isBlank() ? null : v;
+    }
+
+    /** A stored staff photo: the image bytes and their content type. */
+    public record PhotoContent(byte[] bytes, String contentType) {}
+
+    /** Replaces the staff member's photo; the previous file is removed from the vault. */
+    @Transactional
+    public StaffProfileResponse uploadPhoto(UUID staffId, MultipartFile file) {
+        StaffProfile staff = staffProfileRepository.findById(staffId)
+                .orElseThrow(() -> new ResourceNotFoundException("StaffProfile", "staffId", staffId));
+        tenantGuard.requireTenantRecord(staff.getTenantId(), "StaffProfile", "staffId", staffId);
+        String previous = staff.getPhotoPath();
+        staff.setPhotoPath(photoStorage.store(staff.getTenantId(), staffId, file));
+        staffProfileRepository.save(staff);
+        if (previous != null) {
+            photoStorage.delete(previous);
+        }
+        auditService.logSuccess("StaffProfile", "UPLOAD_PHOTO", "Uploaded photo for staffId=" + staffId);
+        return mapToResponse(staff);
+    }
+
+    @Transactional(readOnly = true)
+    public PhotoContent readPhoto(UUID staffId) {
+        StaffProfile staff = staffProfileRepository.findById(staffId)
+                .orElseThrow(() -> new ResourceNotFoundException("StaffProfile", "staffId", staffId));
+        tenantGuard.requireTenantRecord(staff.getTenantId(), "StaffProfile", "staffId", staffId);
+        String path = staff.getPhotoPath();
+        byte[] bytes = path == null ? null : photoStorage.read(path);
+        if (bytes == null) {
+            throw new ResourceNotFoundException("StaffPhoto", "staffId", staffId);
+        }
+        return new PhotoContent(bytes, StaffPhotoStorage.contentTypeFor(path));
     }
 
     private StaffAppraisalResponse mapToAppraisalResponse(StaffAppraisal a) {

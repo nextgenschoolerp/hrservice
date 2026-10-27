@@ -1,5 +1,5 @@
 -- =====================================================================================================
--- Module 07 (hrservice) seed: Delhi Public School (tenant a0eEBc99-…), 2026-2027
+-- Module 07 (hrservice) seed: Delhi Public School (tenant a0eebc99-…), 2026-2027
 -- =====================================================================================================
 -- Run after the Module 01, 03, 04, 05 and 06 seeds (it profiles their staff accounts), after hrservice has started
 -- once, and after db/upgrade/module07_staff_branch_code_user_link.sql:
@@ -83,7 +83,7 @@ INSERT INTO seed_hr_accounts VALUES
 
 INSERT INTO users (user_id, tenant_id, branch_id, username, first_name, last_name, email, phone_number, user_type, is_active, is_mfa_enabled,
                    created_at, updated_at, created_by, updated_by, version)
-SELECT user_id, 'a0eEBc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'DPS-DELHI-NORTH', username, first_name, last_name, email, phone, user_type, true, false,
+SELECT user_id, 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'DPS-DELHI-NORTH', username, first_name, last_name, email, phone, user_type, true, false,
        created_at, created_at, 'seed:module07', NULL, 0
 FROM seed_hr_accounts;
 

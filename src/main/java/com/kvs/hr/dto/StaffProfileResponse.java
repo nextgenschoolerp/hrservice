@@ -40,4 +40,6 @@ public class StaffProfileResponse {
     private EmploymentStatus employmentStatus;
     private String qualifications;
     private String contractTerms;
+    /** True when a photo is on file; fetch it from /employees/{staffId}/photo/file. */
+    private boolean hasPhoto;
 }
