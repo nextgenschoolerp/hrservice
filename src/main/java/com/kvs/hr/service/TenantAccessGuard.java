@@ -76,6 +76,20 @@ public class TenantAccessGuard {
         }
     }
 
+    /**
+     * A campus check: a caller whose token names a branch may only read that branch. Super administrators and trustees are
+     * exempt. A token without a branch claim (issued before this check) is not limited here.
+     */
+    public void requireBranch(String branchId) {
+        if (branchId == null || isSuperAdmin() || hasAnyRole("TRUSTEE", "TRUST_TREASURER")) {
+            return;
+        }
+        boolean otherCampus = claim("branchId").map(mine -> !mine.equalsIgnoreCase(branchId)).orElse(false);
+        if (otherCampus) {
+            throw new com.kvs.core.exception.ForbiddenException("You may only access records of your own campus");
+        }
+    }
+
     public String requireCurrentTenantId() {
         return currentTenantId()
                 .orElseThrow(() -> new ResourceNotFoundException("Tenant", "currentTenant", "missing in JWT claims"));

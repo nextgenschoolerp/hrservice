@@ -108,6 +108,7 @@ public class EmployeeService {
     @Transactional(readOnly = true)
     public List<StaffProfileResponse> listEmployees(String department, String branchId) {
         String tenantId = tenantGuard.requireCurrentTenantId();
+        tenantGuard.requireBranch(branchId);
         boolean byDept = department != null && !department.isBlank();
         boolean byBranch = branchId != null && !branchId.isBlank();
         List<StaffProfile> list;
